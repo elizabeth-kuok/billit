@@ -5,7 +5,8 @@ import { BillsService } from "../bills.service";
 
 @Component({
     selector: "app-bill-add",
-    templateUrl: "./bill-add.component.html"
+    templateUrl: "./bill-add.component.html",
+    styleUrls: ["./bill-add.component.css"]
 })
 export class BillAddComponent {
     @ViewChild('f') bForm: NgForm;
