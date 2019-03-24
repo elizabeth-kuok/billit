@@ -31,7 +31,8 @@ export class BillsService {
             });
     }
 
-    private addDataToDatabase(bill: Bill) {
-        
+    addDataToDatabase(bill: Bill) {
+        this.db.collection('bills')
+            .add(bill);
     }
 }
