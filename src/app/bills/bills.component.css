@@ -8,3 +8,6 @@ mat-card {
 mat-card p {
     padding-left: 16px
 }
+.page-header {
+    margin: 12px 0;
+}

@@ -1,4 +1,7 @@
-<h1>Bills</h1>
+<div class="page-header d-flex align-items-center justify-content-between">
+    <h2>Bills</h2>
+    <button mat-raised-button color="primary">Add new bill</button>
+</div>
 <mat-card class="mat-elevation-z3" *ngFor="let bill of bills">
   <mat-card-header>
     <mat-card-title>{{bill.name}}</mat-card-title>
