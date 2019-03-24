@@ -3,9 +3,11 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { HomeComponent } from './core/home/home.component';
+import { BillsComponent } from './bills/bills.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'bills', component: BillsComponent },
   { path: 'recipes', loadChildren: './recipes/recipes.module#RecipesModule'},
   { path: 'shopping-list', component: ShoppingListComponent }
 ];
