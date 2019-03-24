@@ -4,7 +4,8 @@ import { Bill } from './bill.model';
 import { BillsService } from './bills.service';
 @Component({
     selector: 'app-bills',
-    templateUrl: './bills.component.html'
+    templateUrl: './bills.component.html',
+    styleUrls: ['./bills.component.css']
 })
 export class BillsComponent implements OnInit, OnDestroy {
     bills: Bill[];
