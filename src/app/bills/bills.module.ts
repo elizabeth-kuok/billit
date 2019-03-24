@@ -5,6 +5,7 @@ import { BillAddComponent } from './bill-add/bill-add.component';
 import { BillsService } from './bills.service';
 import { FormsModule } from '@angular/forms';
 import { BillsRoutingModule } from './bills-routing.module';
+import { MaterialModule } from '../material.module';
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import { BillsRoutingModule } from './bills-routing.module';
     imports: [
         CommonModule,
         FormsModule,
-        BillsRoutingModule
+        BillsRoutingModule,
+        MaterialModule
     ],
     providers: [
         BillsService

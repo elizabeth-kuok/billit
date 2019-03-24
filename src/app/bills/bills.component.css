@@ -1,3 +1,10 @@
 .card {
     margin-bottom: 12px;
 }
+mat-card {
+    margin-bottom: 12px;
+}
+
+mat-card p {
+    padding-left: 16px
+}

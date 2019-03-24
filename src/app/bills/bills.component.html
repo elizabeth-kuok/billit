@@ -1,8 +1,11 @@
 <h1>Bills</h1>
-<div *ngFor="let bill of bills" class="card text-right">
-        <div class="card-body">
-          <h5 class="card-title">{{bill.name}}</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-</div>
+<mat-card class="mat-elevation-z3" *ngFor="let bill of bills">
+  <mat-card-header>
+    <mat-card-title>{{bill.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+        This is some text describing the bill
+    </p>
+  </mat-card-content>
+</mat-card>
