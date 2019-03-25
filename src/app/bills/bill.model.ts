@@ -2,14 +2,15 @@ import { firestore } from "firebase";
 
 export interface Bill {
     id: string;
+    type: 'variable' | 'repeating';
     name: string;
     payments: Payment[];
     shared_with: Owed[];
     due_date?: firestore.Timestamp;
 }
 
-export interface FixedBill extends Bill {
-    type: 'fixed';
+export interface RepeatingBill extends Bill {
+    type: 'repeating';
     due_date: firestore.Timestamp;
     is_late: boolean;
 }

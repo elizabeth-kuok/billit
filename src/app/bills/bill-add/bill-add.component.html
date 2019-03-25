@@ -4,7 +4,6 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-
       <form (ngSubmit)="onSubmit(f)" #f="ngForm">
         <div class="row">
           <div class="col-md-6">
@@ -41,10 +40,34 @@
         </div>
         <div class="row">
           <div class="col-md-12">
+              <mat-checkbox (change)="onRepeatChecked($event)"
+                            [labelPosition]="'before'"
+                            class="align-self-end">
+                      Is this a repeating bill?
+              </mat-checkbox>    
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+              <mat-form-field *ngIf="isRepeating" class="full-width">
+                  <mat-label>Set repeat by</mat-label>
+                  <mat-select disableOptionCentering>
+                    <mat-option *ngFor="let period of periods" [value]="period">
+                      {{period}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
             <div class="d-flex justify-content-end">
               <button mat-raised-button 
-              color="primary"
-              type="submit" [disabled]="!f.valid">Create</button>
+                      color="primary"
+                      type="submit" 
+                      [disabled]="!f.valid">
+                        Create
+              </button>
               <button mat-stroked-button
                 type="button" (click)="onClear()">Clear</button>
             </div>

@@ -4,6 +4,7 @@ import { Bill } from "../bill.model";
 import { BillsService } from "../bills.service";
 
 import { firestore } from "firebase";
+import { MatCheckbox, MatCheckboxChange } from "@angular/material";
 const Timestamp = firestore.Timestamp;
 @Component({
     selector: "app-bill-add",
@@ -12,13 +13,23 @@ const Timestamp = firestore.Timestamp;
 })
 export class BillAddComponent {
     @ViewChild('f') bForm: NgForm;
+    @ViewChild('repeatCheck') repeatCheck: MatCheckbox;
 
     constructor(private billService: BillsService) { }
+    periods = [
+        "Month",
+        "Week",
+        "Year"
+    ];
+    isRepeating = false;;
     amount;
     onSubmit(form: NgForm) {
         const value = form.value;
+        console.log(value);
+        console.log(this.repeatCheck);
         const bill = {
             id: null,
+            type: this.isRepeating ? 'repeating' : 'variable',
             name: value.name,
             amount: +value.amount,
             due_date: value.due_date && firestore.Timestamp.fromDate(value.due_date),
@@ -28,6 +39,10 @@ export class BillAddComponent {
         console.log(bill);
         // this.billService.addDataToDatabase(bill);
         form.reset();
+    }
+
+    onRepeatChecked(event: MatCheckboxChange) {
+        this.isRepeating = event.checked;
     }
 
     onBlur(num: string) {

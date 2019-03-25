@@ -5,3 +5,7 @@ button {
 .full-width {
     width: 100%;
 }
+
+.row {
+    margin-bottom: 12px;
+}
