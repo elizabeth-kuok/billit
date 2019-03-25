@@ -32,6 +32,9 @@ export class BillsService {
     }
 
     addDataToDatabase(bill: Bill) {
+        if (!bill.id) {
+            bill.id = this.db.createId();
+        }
         this.db.collection('bills')
             .add(bill);
     }

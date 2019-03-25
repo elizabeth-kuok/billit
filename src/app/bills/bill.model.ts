@@ -1,13 +1,16 @@
+import { firestore } from "firebase";
+
 export interface Bill {
     id: string;
     name: string;
-    payments: Payment;
+    payments: Payment[];
     shared_with: Owed[];
+    due_date?: firestore.Timestamp;
 }
 
 export interface FixedBill extends Bill {
     type: 'fixed';
-    due_date: Date;
+    due_date: firestore.Timestamp;
     is_late: boolean;
 }
 

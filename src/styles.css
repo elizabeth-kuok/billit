@@ -1,1 +1,5 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.page-header {
+    margin: 12px 0;
+}
