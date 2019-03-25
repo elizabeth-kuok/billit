@@ -47,16 +47,44 @@
               </mat-checkbox>    
           </div>
         </div>
-        <div class="row">
+        <div *ngIf="isRepeating" class="row">
           <div class="col-md-6">
-              <mat-form-field *ngIf="isRepeating" class="full-width">
+              <mat-form-field class="full-width">
                   <mat-label>Set repeat by</mat-label>
-                  <mat-select disableOptionCentering>
+                  <mat-select #period
+                             [value]="default.period"
+                             (selectionChange)="onPeriodSelect(period.value)"
+                              disableOptionCentering>
                     <mat-option *ngFor="let period of periods" [value]="period">
                       {{period}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
+          </div>
+          <div class="col-md-3">
+              <mat-form-field *ngIf="selectedPeriod === 'month' || selectedPeriod === 'week'" class="full-width">
+                <input #mfilter
+                      type="text"
+                      placeholder="Repeat on day" 
+                      aria-label="Day of Repeat" 
+                      matInput [matAutocomplete]="auto"
+                      name="day_repeat"
+                      ngModel
+                      (keyup)="onKeyUpFilter(mfilter.value, selectedPeriod)">
+                <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let day of filterMap[selectedPeriod]" [value]="day">
+                  {{day}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field *ngIf="selectedPeriod === 'year'" class="full-width">
+                <input matInput 
+                  [matDatepicker]="rpicker" 
+                  placeholder="Repeat on date"
+                  name="repeat_on_date" ngModel>
+                <mat-datepicker-toggle matSuffix [for]="rpicker"></mat-datepicker-toggle>
+                <mat-datepicker #rpicker></mat-datepicker>
+              </mat-form-field>
           </div>
         </div>
         <div class="row">

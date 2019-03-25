@@ -1,19 +1,18 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Bill } from "../bill.model";
 import { BillsService } from "../bills.service";
 
 import { firestore } from "firebase";
-import { MatCheckbox, MatCheckboxChange } from "@angular/material";
-const Timestamp = firestore.Timestamp;
+import { MatCheckboxChange } from "@angular/material";
+
 @Component({
     selector: "app-bill-add",
     templateUrl: "./bill-add.component.html",
     styleUrls: ["./bill-add.component.css"]
 })
-export class BillAddComponent {
+export class BillAddComponent implements OnInit {
     @ViewChild('f') bForm: NgForm;
-    @ViewChild('repeatCheck') repeatCheck: MatCheckbox;
 
     constructor(private billService: BillsService) { }
     periods = [
@@ -21,15 +20,38 @@ export class BillAddComponent {
         "Week",
         "Year"
     ];
+    selectedPeriod: 'month' | 'week' | 'year' = 'month';
+
     isRepeating = false;;
     amount;
+
+    sourceMap = {
+        month: ['1', 'End of month'],
+        week: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    }
+
+    filterMap = {
+        month: [],
+        week: []
+    }
+
+    default = {
+        period: this.periods[0]
+    }
+
+    ngOnInit() {
+        for (let i = 2; i < 32; i++) {
+            this.sourceMap.month.push('' + i);
+        }
+        this.filterMap.month = this.sourceMap.month.slice();
+        this.filterMap.week = this.sourceMap.week.slice();
+    }
     onSubmit(form: NgForm) {
         const value = form.value;
         console.log(value);
-        console.log(this.repeatCheck);
         const bill = {
             id: null,
-            type: this.isRepeating ? 'repeating' : 'variable',
+            type: this.isRepeating ? 'repeating' as 'repeating' : 'variable' as 'variable',
             name: value.name,
             amount: +value.amount,
             due_date: value.due_date && firestore.Timestamp.fromDate(value.due_date),
@@ -37,7 +59,7 @@ export class BillAddComponent {
             shared_with: [],
         };
         console.log(bill);
-        // this.billService.addDataToDatabase(bill);
+        this.billService.addDataToDatabase(bill);
         form.reset();
     }
 
@@ -48,6 +70,17 @@ export class BillAddComponent {
     onBlur(num: string) {
         const cur = this.toCurrencyFormat(num);
         this.amount = cur;
+    }
+
+    onPeriodSelect(p) {
+        console.log(p);
+        this.selectedPeriod = p.toLowerCase();
+    }
+
+    onKeyUpFilter(val: string, filter_key: string) {
+        this.filterMap[filter_key] = this.sourceMap[filter_key].filter((day) => {
+            return day.toLowerCase().includes(val.toLowerCase());
+        });
     }
 
     private toCurrencyFormat(num: string) {
