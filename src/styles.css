@@ -1,5 +1,10 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+body {
+    background-color: #e8eaf6
+    ;
+}
+
 .page-header {
     margin: 12px 0;
 }

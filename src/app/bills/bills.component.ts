@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Bill } from './bill.model';
+import { Bill, Account } from './bill.model';
 import { BillsService } from './bills.service';
 @Component({
     selector: 'app-bills',
@@ -10,6 +10,8 @@ import { BillsService } from './bills.service';
 export class BillsComponent implements OnInit, OnDestroy {
     bills: Bill[];
     billsSubscription: Subscription;
+    accounts: Account[];
+    accountsSub: Subscription;
     
     constructor(private billsService: BillsService) { }
 
@@ -19,9 +21,15 @@ export class BillsComponent implements OnInit, OnDestroy {
                 this.bills = bills;
             });
         this.billsService.fetchBills();
+        this.accountsSub = this.billsService.accountsChanged
+            .subscribe(accts => {
+                this.accounts = accts;
+            });
+        this.billsService.fetchAccounts();
     }
 
     ngOnDestroy() {
         this.billsSubscription.unsubscribe();
+        this.accountsSub.unsubscribe();
     }
 }

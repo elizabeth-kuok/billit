@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { Bill } from "../bill.model";
+import { Bill, Account } from "../bill.model";
 import { BillsService } from "../bills.service";
 
 import { firestore } from "firebase";
@@ -49,18 +49,32 @@ export class BillAddComponent implements OnInit {
     onSubmit(form: NgForm) {
         const value = form.value;
         console.log(value);
-        const bill = {
-            id: null,
-            type: this.isRepeating ? 'repeating' as 'repeating' : 'variable' as 'variable',
+
+        const doMakeAccount = this.isRepeating;
+
+        const bill: Bill = {
             name: value.name,
             amount: +value.amount,
             due_date: value.due_date && firestore.Timestamp.fromDate(value.due_date),
-            payments: [],
+            payment: null,
             shared_with: [],
         };
-        console.log(bill);
-        this.billService.addDataToDatabase(bill);
+
+        if (!doMakeAccount) {
+            console.log(bill);
+            this.billService.addDataToDatabase(bill);
+            form.reset();
+            return;
+        }
+
+        const account: Account = {
+            name: value.name,
+            bills: [bill]
+        }
+        console.log(account);
+        this.billService.createAccount(account);
         form.reset();
+        
     }
 
     onRepeatChecked(event: MatCheckboxChange) {

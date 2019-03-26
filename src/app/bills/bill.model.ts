@@ -1,24 +1,37 @@
 import { firestore } from "firebase";
 
 export interface Bill {
-    id: string;
-    type: 'variable' | 'repeating';
+    id?: string;
     name: string;
-    payments: Payment[];
+    amount: number;
+    payment: Payment;
     shared_with: Owed[];
     due_date?: firestore.Timestamp;
 }
 
-export interface RepeatingBill extends Bill {
-    type: 'repeating';
-    due_date: firestore.Timestamp;
-    is_late: boolean;
+export interface Account {
+    id?: string;
+    name: string;
+    bills: Bill[];
+    rule?: MonthlyRule | WeeklyRule | YearlyRule;
 }
 
-export interface BillCollection {
-    name: string;
-    type: 'defined' | 'misc';
-    bills: Bill[];
+export interface WeeklyRule {
+    type: 'week',
+    day: WeekDay
+}
+
+export interface MonthlyRule {
+    type: 'month',
+    day: string
+};
+
+export interface YearlyRule {
+    type: 'year',
+    monthday: {
+        month: number,
+        day: number
+    }
 }
 
 export interface Payment {
@@ -31,3 +44,5 @@ export interface Owed {
     user_id: string;
     amount: number;
 }
+
+type WeekDay = 'Monday'| 'Tuesday'| 'Wednesday'| 'Thursday'| 'Friday'| 'Saturday'| 'Sunday';
