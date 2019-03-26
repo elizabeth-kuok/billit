@@ -4,10 +4,10 @@
 mat-card {
     margin-bottom: 12px;
 }
-
+/* 
 mat-card p {
     padding-left: 16px
-}
+} */
 
 .accounts {
     background-color: #ffffff;
@@ -20,4 +20,16 @@ mat-card p {
     /* color: #ffffff; */
     /* background-color: #0d47a1; */
     border: 1px solid #f8bbd0;
+}
+
+.bill-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+.bill-header {
+    margin-bottom: 12px;
+}
+
+.bill-due-date {
+
 }

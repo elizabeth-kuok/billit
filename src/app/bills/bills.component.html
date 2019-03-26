@@ -6,14 +6,16 @@
 <div class="row">
   <div class="col-md-7">
       <mat-card class="mat-elevation-z3" *ngFor="let bill of bills">
-        <mat-card-header>
-          <mat-card-title>{{bill.name}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>
-              This is some text describing the bill
-          </p>
-        </mat-card-content>
+          <div class="bill-header d-flex justify-content-between">
+            <div class="bill-title">{{bill.name}}</div>
+            <div>{{bill.amount | currency}}</div>
+          </div>
+          
+          
+          <div>This is some text describing the bill</div>
+          <div class="d-flex justify-content-end">
+            <div class="bill-due-date">{{transformDueDate(bill) | date}}</div>
+          </div>
       </mat-card>
   </div>
   

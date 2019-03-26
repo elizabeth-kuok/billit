@@ -32,4 +32,9 @@ export class BillsComponent implements OnInit, OnDestroy {
         this.billsSubscription.unsubscribe();
         this.accountsSub.unsubscribe();
     }
+
+    transformDueDate(bill: Bill) {
+        if (!bill.due_date) return null;
+        return bill.due_date.toDate();
+    }
 }
