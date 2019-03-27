@@ -12,13 +12,25 @@ export class SignupComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
+  isPasswordMatch: boolean;
+  matchTimeout: number;
   ngOnInit() {
+
   }
 
-  onSignup(form: NgForm) {
+  onInputRepeat(pw, rep) {
+    console.log(pw, rep);
+    window.clearTimeout(this.matchTimeout);
+    this.matchTimeout = window.setTimeout((first, second) => {
+      this.isPasswordMatch = first === second;
+    }, 1000, pw, rep)
+  }
+
+  onSubmit(form: NgForm) {
     const email = form.value.email;
     const password = form.value.password;
-    this.authService.signupUser(email, password);
+    console.log(form.value);
+    // this.authService.signupUser(email, password);
   }
 
 }
