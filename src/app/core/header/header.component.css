@@ -1,6 +1,9 @@
 mat-toolbar {
     padding: 0 30px;
 }
+a[mat-button]:hover {
+    color: #fafafa
+}
 .icon {
     /* color: black; */
     /* background-color: black; */
