@@ -1,3 +1,27 @@
-mat-card {
-    margin-top: 24px;
+mat-form-field {
+    margin-top: 12px;
+}
+
+.form-card {
+    margin-top: 60px;
+    /* padding-top: 24px;
+    padding-left: 36px;
+    padding-right: 36px; */
+    /* min-width: 400px; */
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+.form-container > * {
+    width: 100%;
+}
+a {
+    width: 150px;
+}
+button {
+    margin-top: 20px;
+    width: 150px;
 }

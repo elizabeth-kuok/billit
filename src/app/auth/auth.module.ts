@@ -17,6 +17,9 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     AuthRoutingModule,
     MaterialModule
+  ],
+  exports: [
+    LoginComponent
   ]
 })
 export class AuthModule {}

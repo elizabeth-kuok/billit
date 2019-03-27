@@ -15,11 +15,13 @@ import { CoreModule } from './core/core.module';
 import { MaterialModule } from './material.module';
 
 import { environment } from '../environments/environment';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
