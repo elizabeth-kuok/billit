@@ -1,12 +1,12 @@
 <mat-toolbar color="primary">
-  <span class="logo">bill.it</span>
-  <a mat-button routerLink="/bills" routerLinkActive="active">My Bills</a>
-  <a mat-button routerLink="/accounts" routerLinkActive="active">Accounts</a>
-  <a mat-button routerLink="/payments" routerLinkActive="active">Payments</a>
-  <a mat-button routerLink="/friends" routerLinkActive="active">Friends</a>
+  <a class="logo" routerLink="/">bill.it</a>
+  <a *ngIf="isAuth" mat-button routerLink="/bills" routerLinkActive="active">My Bills</a>
+  <a *ngIf="isAuth" mat-button routerLink="/accounts" routerLinkActive="active">Accounts</a>
+  <a *ngIf="isAuth" mat-button routerLink="/payments" routerLinkActive="active">Payments</a>
+  <a *ngIf="isAuth" mat-button routerLink="/friends" routerLinkActive="active">Friends</a>
   <span class="spacer"></span>
 
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+  <button *ngIf="isAuth" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>settings</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
@@ -14,7 +14,7 @@
         <mat-icon>account_box</mat-icon>
         <span>My profile</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="onLogout()">
         <mat-icon>close</mat-icon>
         <span>Logout</span>
       </button>
