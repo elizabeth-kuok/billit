@@ -5,29 +5,34 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { User } from './user.model';
 import { AuthData } from './auth-data.model';
-import { BillsService } from '../bills/bills.service';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
-  authChange = new Subject<boolean>();
+  authChange = new Subject<User>();
   private user: User;
 
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
-    private billService: BillsService
   ) {}
 
   initAuthListener() {
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        this.authChange.next(true);
+        this.authChange.next({
+          userId: user.uid,
+          email: user.email
+        });
         this.router.navigate(['/bills']);
+        this.user = {
+          userId: user.uid,
+          email: user.email
+        };
+        console.log(user);
       } else {
-        this.billService.cancelSubs();
         this.user = null;
-        this.authChange.next(false);
+        this.authChange.next(null);
       }
     });
   }

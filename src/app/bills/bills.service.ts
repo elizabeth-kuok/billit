@@ -1,20 +1,39 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { AngularFirestore } from "angularfire2/firestore";
 
 import { Bill, Account } from "./bill.model"
 import { Subject } from "rxjs";
 import { Subscription } from "rxjs/Subscription";
+import { AuthService } from "../auth/auth.service";
+import { User } from "../auth/user.model";
 
 @Injectable()
 export class BillsService {
 
-    constructor(private db: AngularFirestore) { }
+    constructor(
+        private db: AngularFirestore,
+        private authService: AuthService
+    ) { }
 
     billsChanged = new Subject<Bill[]>();
     accountsChanged = new Subject<Account[]>();
+    private authSub: Subscription;
+    private user: User;
     private bills: Bill[] = [];
     private accounts: Account[] = [];
     private fbSubs: Subscription[] = [];
+
+    init() {
+        this.authSub = this.authService.authChange.subscribe((user: User) => {
+            console.log("User from auth service");
+            console.log(user);
+            if (user) {
+                this.user = user;
+            } else {
+                this.cancelSubs();
+            }
+        });
+    }
 
     fetchBills() {
         const sub = this.db
@@ -60,12 +79,12 @@ export class BillsService {
     }
 
     addDataToDatabase(bill: Bill) {
-        this.db.collection('bills')
+        this.db.collection('bills/' + this.user.userId + '/bills')
             .add(bill);
     }
 
     createAccount(acct: Account) {
-        this.db.collection('accounts')
+        this.db.collection('accounts/' + this.user.userId + '/accounts')
             .add(acct);
     }
 
