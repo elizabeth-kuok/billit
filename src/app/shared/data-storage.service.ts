@@ -14,15 +14,15 @@ export class DataStorageService {
   }
 
   storeRecipes() {
-    const token = this.authService.getToken();
+    // const token = this.authService.getToken();
 
-    return this.http.put('https://billit-ct7.firebaseio.com/recipes.json?auth=' + token, this.recipeService.getRecipes());
+    return this.http.put('https://billit-ct7.firebaseio.com/recipes.json?auth=', this.recipeService.getRecipes());
   }
 
   getRecipes() {
-    const token = this.authService.getToken();
+    // const token = this.authService.getToken();
 
-    this.http.get('https://billit-ct7.firebaseio.com/recipes.json?auth=' + token)
+    this.http.get('https://billit-ct7.firebaseio.com/recipes.json?auth=')
       .map(
         (response: Response) => {
           const recipes: Recipe[] = response.json();
