@@ -5,6 +5,7 @@ import { BillsService } from "../bills.service";
 
 import { firestore } from "firebase";
 import { MatCheckboxChange } from "@angular/material";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "app-bill-add",
@@ -14,7 +15,10 @@ import { MatCheckboxChange } from "@angular/material";
 export class BillAddComponent implements OnInit {
     @ViewChild('f') bForm: NgForm;
 
-    constructor(private billService: BillsService) { }
+    constructor(
+        private billService: BillsService,
+        private router: Router
+    ) { }
     periods = [
         "Month",
         "Week",
@@ -58,23 +62,25 @@ export class BillAddComponent implements OnInit {
             due_date: value.due_date && firestore.Timestamp.fromDate(value.due_date),
             payment: null,
             shared_with: [],
+            notes: value.notes
         };
 
         if (!doMakeAccount) {
             console.log(bill);
-            this.billService.addDataToDatabase(bill);
+            this.billService.createBill(bill);
             form.reset();
             return;
         }
 
         const account: Account = {
             name: value.name,
-            bills: [bill]
+            bills: [bill],
+            notes: value.notes
         }
         console.log(account);
         this.billService.createAccount(account);
         form.reset();
-        
+        this.router.navigate(['/bills']);
     }
 
     onRepeatChecked(event: MatCheckboxChange) {

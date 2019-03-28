@@ -39,6 +39,15 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-md-9">
+            <mat-form-field class="full-width">
+              <textarea matInput class="notes-area"
+                        placeholder="Notes"
+                        ngModel name="notes"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-12">
               <mat-checkbox (change)="onRepeatChecked($event)"
                             [labelPosition]="'before'"

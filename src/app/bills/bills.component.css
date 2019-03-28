@@ -8,7 +8,9 @@ mat-card {
 mat-card p {
     padding-left: 16px
 } */
-
+hr {
+    margin-bottom: 3px;
+}
 .accounts {
     background-color: #fafafa;
     padding: 24px;
@@ -43,9 +45,6 @@ mat-card p {
 }
 .bill-notes {
     padding: 12px 0;
-    /* text-align: justify; */
-    border-top: 1px solid rgba(0, 0, 0, .1);
-    /* border-bottom: 1px solid rgba(0, 0, 0, .1); */
 }
 .bill-toolbar {
     margin-top: 6px;

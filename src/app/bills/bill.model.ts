@@ -7,6 +7,7 @@ export interface Bill {
     payment: Payment;
     shared_with: Owed[];
     due_date?: firestore.Timestamp;
+    notes?: string
 }
 
 export interface Account {
@@ -14,6 +15,7 @@ export interface Account {
     name: string;
     bills: Bill[];
     rule?: MonthlyRule | WeeklyRule | YearlyRule;
+    notes?: string;
 }
 
 export interface WeeklyRule {

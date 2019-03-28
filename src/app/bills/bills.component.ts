@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { Bill, Account } from './bill.model';
 import { BillsService } from './bills.service';
 @Component({
@@ -23,8 +23,15 @@ export class BillsComponent implements OnInit, OnDestroy {
         this.billsService.fetchBills();
         this.accountsSub = this.billsService.accountsChanged
             .subscribe(accts => {
+                console.log(accts);
+                const acctBills: Bill[] = [];
+                for (let acct of accts) {
+                    acctBills.push(acct.bills[0]);
+                }
                 this.accounts = accts;
+                this.bills = [...acctBills, ...this.bills];
             });
+        this.billsService.fetchBills();
         this.billsService.fetchAccounts();
     }
 

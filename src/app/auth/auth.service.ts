@@ -24,7 +24,7 @@ export class AuthService {
           userId: user.uid,
           email: user.email
         });
-        this.router.navigate(['/bills']);
+        // this.router.navigate(['/bills']);
         this.user = {
           userId: user.uid,
           email: user.email

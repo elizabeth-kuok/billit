@@ -16,3 +16,6 @@ button {
     padding-left: 36px;
     padding-right: 36px;
 }
+.notes-area {
+    height: 120px;
+}

@@ -82,7 +82,7 @@ export class BillsService {
         this.fbSubs.push(sub);
     }
 
-    addDataToDatabase(bill: Bill) {
+    createBill(bill: Bill) {
         this.db.collection(this.genUserPath('bills'))
             .add(bill);
     }
