@@ -29,15 +29,18 @@ export class BillsService {
             console.log(user);
             if (user) {
                 this.user = user;
+                this.activateSubs();
             } else {
                 this.cancelSubs();
+                this.user = null;
             }
         });
     }
 
     fetchBills() {
+        if (!this.user) return;
         const sub = this.db
-            .collection('bills')
+            .collection(this.genUserPath('bills'))
             .snapshotChanges()
             .map(docArray => {
                 return docArray.map(doc => {
@@ -57,8 +60,9 @@ export class BillsService {
     }
 
     fetchAccounts() {
+        if (!this.user) return;
         const sub = this.db
-            .collection('accounts')
+            .collection(this.genUserPath('accounts'))
             .snapshotChanges()
             .map(docArray => {
                 return docArray.map(doc => {
@@ -79,17 +83,26 @@ export class BillsService {
     }
 
     addDataToDatabase(bill: Bill) {
-        this.db.collection('bills/' + this.user.userId + '/bills')
+        this.db.collection(this.genUserPath('bills'))
             .add(bill);
     }
 
     createAccount(acct: Account) {
-        this.db.collection('accounts/' + this.user.userId + '/accounts')
+        this.db.collection(this.genUserPath('accounts'))
             .add(acct);
     }
 
     cancelSubs() {
         this.fbSubs.forEach(sub => sub.unsubscribe());
+    }
+
+    private activateSubs() {
+        this.fetchBills();
+        this.fetchAccounts();
+    }
+
+    private genUserPath(collection_name: string) {
+        return collection_name + '/' + this.user.userId + '/' + collection_name;
     }
 
     // testNestedDocuments() {
