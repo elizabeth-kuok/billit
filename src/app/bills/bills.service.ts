@@ -3,6 +3,7 @@ import { AngularFirestore } from "angularfire2/firestore";
 
 import { Bill, Account } from "./bill.model"
 import { Subject } from "rxjs";
+import { Subscription } from "rxjs/Subscription";
 
 @Injectable()
 export class BillsService {
@@ -13,9 +14,10 @@ export class BillsService {
     accountsChanged = new Subject<Account[]>();
     private bills: Bill[] = [];
     private accounts: Account[] = [];
+    private fbSubs: Subscription[] = [];
 
     fetchBills() {
-        return this.db
+        const sub = this.db
             .collection('bills')
             .snapshotChanges()
             .map(docArray => {
@@ -29,11 +31,14 @@ export class BillsService {
             .subscribe((bills: Bill[]) => {
                 this.bills = bills;
                 this.billsChanged.next([...this.bills]);
+            }, error => {
+                // nothing yet
             });
+        this.fbSubs.push(sub);
     }
 
     fetchAccounts() {
-        return this.db
+        const sub = this.db
             .collection('accounts')
             .snapshotChanges()
             .map(docArray => {
@@ -47,7 +52,11 @@ export class BillsService {
             .subscribe((accts: Account[]) => {
                 this.accounts = accts;
                 this.accountsChanged.next([...this.accounts]);
+            }, error => {
+                // nothing yet
             });
+        
+        this.fbSubs.push(sub);
     }
 
     addDataToDatabase(bill: Bill) {
@@ -58,6 +67,10 @@ export class BillsService {
     createAccount(acct: Account) {
         this.db.collection('accounts')
             .add(acct);
+    }
+
+    cancelSubs() {
+        this.fbSubs.forEach(sub => sub.unsubscribe());
     }
 
     // testNestedDocuments() {

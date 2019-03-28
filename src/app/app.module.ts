@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -38,7 +39,8 @@ import { HomeComponent } from './home/home.component';
     AngularFireModule.initializeApp(
       environment.firebase
     ),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   bootstrap: [AppComponent]
 })

@@ -1,34 +1,59 @@
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
-import { Injectable } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { User } from './user.model';
 import { AuthData } from './auth-data.model';
+import { BillsService } from '../bills/bills.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
   authChange = new Subject<boolean>();
   private user: User;
 
+  constructor(
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private billService: BillsService
+  ) {}
+
+  initAuthListener() {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.authChange.next(true);
+        this.router.navigate(['/bills']);
+      } else {
+        this.billService.cancelSubs();
+        this.user = null;
+        this.authChange.next(false);
+      }
+    });
+  }
+
   registerUser(authData: AuthData) {
-    this.user = {
-      email: authData.email,
-      userId: '' + Math.round(Math.random() * 10000)
-    };
-    this.authChange.next(true);
+    this.afAuth.auth.createUserWithEmailAndPassword(
+      authData.email, authData.password
+    ).then(result => {
+      console.log(result);
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   login(authData: AuthData) {
-    this.user = {
-      email: authData.email,
-      userId: '' + Math.round(Math.random() * 10000)
-    };
-    this.authChange.next(true);
+    this.afAuth.auth.signInWithEmailAndPassword(
+      authData.email, authData.password
+    ).then(result => {
+      console.log(result);
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   logout() {
-    this.user = null;
-    this.authChange.next(false);
+    this.afAuth.auth.signOut();
   }
 
   getUser() {
