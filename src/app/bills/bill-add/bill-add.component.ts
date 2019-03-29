@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, AfterViewInit, AfterContentInit } from "@angular/core";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
 import { Bill, Account } from "../bill.model";
 import { BillsService } from "../bills.service";
@@ -6,6 +6,8 @@ import { BillsService } from "../bills.service";
 import { firestore } from "firebase";
 import { MatCheckboxChange } from "@angular/material";
 import { Router, ActivatedRoute, UrlSegment } from "@angular/router";
+
+import { Util } from "../../util/util";
 
 @Component({
     selector: "app-bill-add",
@@ -165,29 +167,6 @@ export class BillAddComponent implements OnInit {
     }
 
     private toCurrencyFormat(num: string) {
-        let i = -1
-        if (+num === 0 || isNaN(+num)) {
-            return "0.00";
-        }
-        if (!/[0-9]?\.?[0-9]?/.test(num)) {
-            return "0.00";
-        }
-        while(++i < num.length) {
-            if (num[i] !== "0") break;
-        }
-        if (num.indexOf('.') < 0) {
-            return num.slice(i) + ".00";
-        }
-        let dec = num.split('.');
-
-        let j = -1, d = "";
-        while(++j < 2) {
-            if (dec[1][j]) {
-                d += dec[1][j];
-                continue;
-            }
-            d += "0";
-        }
-        return dec[0].slice(i) + "." + d;
+        return Util.toCurrencyFormat(num);
     }
 }

@@ -6,6 +6,8 @@ import { BillsService } from '../bills.service';
 import { Bill } from '../bill.model';
 
 import { Util as _u } from '../../util/util';
+import { FormArray, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material';
 
 @Component({
     selector: 'app-view-bill',
@@ -19,7 +21,11 @@ export class ViewBillComponent implements OnInit {
     billsSubscription: Subscription;
     accountsSub: Subscription;
 
+    shareForm: FormGroup;
+
     transformDueDate = _u.transformDueDate;
+
+    isSplit: boolean;
 
     constructor(
         private router: Router,
@@ -27,6 +33,7 @@ export class ViewBillComponent implements OnInit {
         private billService: BillsService
     ) {}
     ngOnInit() {
+        this.initShareForm();
         this.billsSubscription = this.billService.billsChanged
             .subscribe(bills => {
                 this.findBill();
@@ -62,5 +69,49 @@ export class ViewBillComponent implements OnInit {
         } else {
             this.router.navigate(['bills/edit/' + bill.id]);
         }
+    }
+
+    initShareForm() {
+        this.shareForm = new FormGroup({
+            'friends': new FormArray([])
+        });
+    }
+
+    onAddFriend() {
+        (<FormArray>this.shareForm.get('friends')).push(
+            new FormGroup({
+                'name': new FormControl(null, Validators.required),
+                'amount': new FormControl(null)
+            })
+        )
+    }
+
+    onDeleteFriend(index: number) {
+        (<FormArray>this.shareForm.get('friends')).removeAt(index);
+      }
+
+    getControls(): AbstractControl[] {
+        return (<FormArray>this.shareForm.get('friends')).controls;
+    }
+
+    onSubmit() {
+        console.log("Submit");
+        console.log(this.shareForm.value);
+    }
+
+    onSplitChecked(event: MatCheckboxChange) {
+        this.isSplit = event.checked;
+        if (!this.isSplit) return;
+
+        const controls = this.getControls();
+        
+        controls.forEach(c => {
+            c.patchValue({
+                amount: _u.toCurrencyFormat(
+                    (this.bill.amount / controls.length)
+                        .toString()
+                )
+            })
+        })
     }
 }

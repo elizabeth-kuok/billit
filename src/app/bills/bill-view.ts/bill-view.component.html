@@ -5,8 +5,55 @@
       <div>{{ transformDueDate(bill) | date }}</div>
       <div>{{ bill?.notes }}</div>
     </div>
-    <div class="bill-toolbar d-flex justify-content-end">
-        <a mat-button routerLink="." color="accent">Pay</a>
-        <a mat-button (click)="navigateToBillEdit(bill)" color="primary">Edit</a>
+    <div class="bill-toolbar d-flex justify-content-between">
+      <div class="d-flex">
+        <a mat-button (click)="onAddFriend()" color="primary">Add Friend</a>
+        <div *ngIf="getControls().length > 0" class="checkbox">
+            <mat-checkbox (change)="onSplitChecked($event)"
+                          [labelPosition]="'after'">
+              Split evenly
+              </mat-checkbox>  
+            </div>
+      </div>
+      <div>
+          <a mat-button routerLink="." color="accent">Pay</a>
+          <a mat-button (click)="navigateToBillEdit(bill)" color="primary">Edit</a>
+      </div>
+    </div>
+    <div *ngIf="getControls().length > 0">
+        <hr>
+        <form [formGroup]="shareForm" (ngSubmit)="onSubmit()">
+          <div formArrayName="friends">
+            <div
+              *ngFor="let friendCtrl of getControls(); let i = index"
+              [formGroupName]="i">
+              <div class="row">
+                <div class="col-md-7">
+                  <mat-form-field class="full-width">
+                    <input matInput
+                      placeholder="Name"
+                      type="text"
+                      formControlName="name">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="full-width">
+                    <input matInput
+                      placeholder="Amount"
+                      type="number"
+                      formControlName="amount">
+                  </mat-form-field>
+                </div>
+                  <div>
+                    <button mat-mini-fab color="warn"
+                            (click)="onDeleteFriend(i)">X</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+              <button mat-raised-button type="submit" color="accent">Save</button>
+          </div>
+        </form>
     </div>
   </mat-card>
