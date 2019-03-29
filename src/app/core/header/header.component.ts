@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuth = false;
   authSub: Subscription;
+  email: string;
   constructor(
     private authService: AuthService,
     private router: Router
@@ -20,6 +21,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authSub = this.authService.authChange.subscribe(authStatus => {
       this.isAuth = !!authStatus;
+      if (authStatus)
+        this.email = authStatus.email;
     });
   }
 

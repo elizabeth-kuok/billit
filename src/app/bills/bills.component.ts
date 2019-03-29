@@ -70,4 +70,9 @@ export class BillsComponent implements OnInit, OnDestroy {
             this.router.navigate(['/bills/' + bill.id]);
         }
     }
+
+    onPay(bill) {
+        if (!bill.link) return;
+        window.open(bill.link);
+    }
 }

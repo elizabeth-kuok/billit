@@ -1,11 +1,11 @@
 <mat-toolbar color="primary">
   <a class="logo" routerLink="/">bill.it</a>
   <a *ngIf="isAuth" mat-button routerLink="/bills" routerLinkActive="active">My Bills</a>
-  <a *ngIf="isAuth" mat-button routerLink="/accounts" routerLinkActive="active">Accounts</a>
-  <a *ngIf="isAuth" mat-button routerLink="/payments" routerLinkActive="active">Payments</a>
-  <a *ngIf="isAuth" mat-button routerLink="/friends" routerLinkActive="active">Friends</a>
+  <!-- <a *ngIf="isAuth" mat-button routerLink="/accounts" routerLinkActive="active">Accounts</a> -->
+  <!-- <a *ngIf="isAuth" mat-button routerLink="/payments" routerLinkActive="active">Payments</a>
+  <a *ngIf="isAuth" mat-button routerLink="/friends" routerLinkActive="active">Friends</a> -->
   <span class="spacer"></span>
-
+  <span *ngIf="isAuth" class="email">{{ email }}</span>
   <button *ngIf="isAuth" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>settings</mat-icon>
     </button>

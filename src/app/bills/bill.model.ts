@@ -9,6 +9,7 @@ export interface Bill {
     due_date?: firestore.Timestamp;
     notes?: string;
     account_id?: string;
+    link?: string;
 }
 
 export interface Account {
@@ -17,6 +18,7 @@ export interface Account {
     bills: Bill[];
     rule?: MonthlyRule | WeeklyRule | YearlyRule;
     notes?: string;
+    link?: string;
 }
 
 export interface WeeklyRule {

@@ -78,6 +78,7 @@ export class BillAddComponent implements OnInit {
                 amount: new FormControl(''),
                 due_date: new FormControl(''),
                 notes: new FormControl(''),
+                link: new FormControl(''),
                 day_repeat: new FormControl(''),
                 repeat_on_date: new FormControl('')
             });
@@ -88,6 +89,7 @@ export class BillAddComponent implements OnInit {
             amount: new FormControl(this.toCurrencyFormat(bill.amount.toString())),
             due_date: new FormControl(bill.due_date && bill.due_date.toDate()),
             notes: new FormControl(bill.notes),
+            link: new FormControl(bill.link),
             day_repeat: new FormControl(''),
             repeat_on_date: new FormControl('')
         });
@@ -119,7 +121,8 @@ export class BillAddComponent implements OnInit {
             due_date: value.due_date && firestore.Timestamp.fromDate(value.due_date),
             payment: null,
             shared_with: [],
-            notes: value.notes
+            notes: value.notes,
+            link: value.link
         };
 
         if (!doMakeAccount) {
@@ -137,7 +140,8 @@ export class BillAddComponent implements OnInit {
         const account: Account = {
             name: value.name,
             bills: [bill],
-            notes: value.notes
+            notes: value.notes,
+            link: value.link
         }
         console.log(account);
         if (!this.isEdit) {
