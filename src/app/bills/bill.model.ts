@@ -5,7 +5,7 @@ export interface Bill {
     name: string;
     amount: number;
     payment: Payment;
-    shared_with: Owed[];
+    shared_with: FriendDebt[];
     due_date?: firestore.Timestamp;
     notes?: string;
     account_id?: string;
@@ -43,8 +43,9 @@ export interface Payment {
     amount: number;
 }
 
-export interface Owed {
+export interface FriendDebt {
     user_id: string;
+    name: string;
     amount: number;
 }
 

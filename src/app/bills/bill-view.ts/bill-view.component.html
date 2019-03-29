@@ -1,9 +1,20 @@
 <mat-card class="form-card mat-elevation-z7">
-    <div class="page-header">
-      <h3>{{ bill?.name }}</h3>
-      <div>{{ bill?.amount | currency }}</div>
-      <div>{{ transformDueDate(bill) | date }}</div>
-      <div>{{ bill?.notes }}</div>
+    <div class="bill-header d-flex justify-content-between align-items-center">
+      <div class="bill-title">{{bill?.name}}</div>
+      <div class=bill-key-info>
+        <span class="bill-due-date">{{transformDueDate(bill) | date}}</span>
+        <span class="bill-amount">{{bill?.amount | currency}}</span>
+      </div>
+    </div>
+    <div>{{ bill?.notes }}</div>
+    <div *ngIf="friends.length > 0" class="shared-with">
+      <hr>
+        <h6>Shared with</h6>
+        <div *ngFor="let friend of friends" class="row">
+          <div class="col-5">{{friend.name}}: </div>
+          <div class="col-3">{{friend.amount}}</div>
+        </div>
+        <hr>
     </div>
     <div class="bill-toolbar d-flex justify-content-between">
       <div class="d-flex">

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { BillsService } from '../bills.service';
-import { Bill } from '../bill.model';
+import { Bill, FriendDebt } from '../bill.model';
 
 import { Util as _u } from '../../util/util';
 import { FormArray, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
@@ -20,6 +20,8 @@ export class ViewBillComponent implements OnInit {
     bill: Bill;
     billsSubscription: Subscription;
     accountsSub: Subscription;
+
+    friends: FriendDebt[] = [];
 
     shareForm: FormGroup;
 
@@ -61,6 +63,8 @@ export class ViewBillComponent implements OnInit {
 
     findBill() {
         this.bill = this.billService.getAccountBill(this.accountId, this.billId);
+        console.log(this.bill);
+        this.friends = (this.bill && this.bill.shared_with) || [];
     }
 
     navigateToBillEdit(bill: Bill) {
@@ -97,6 +101,9 @@ export class ViewBillComponent implements OnInit {
     onSubmit() {
         console.log("Submit");
         console.log(this.shareForm.value);
+        let bill = this.bill;
+        bill.shared_with = this.shareForm.value.friends;
+        this.billService.updateAccountBill(bill);
     }
 
     onSplitChecked(event: MatCheckboxChange) {
@@ -108,10 +115,14 @@ export class ViewBillComponent implements OnInit {
         controls.forEach(c => {
             c.patchValue({
                 amount: _u.toCurrencyFormat(
-                    (this.bill.amount / controls.length)
+                    (this.bill.amount / (controls.length + 1))
                         .toString()
                 )
             })
         })
+    }
+
+    toCurrencyFormat(num: string) {
+        return _u.toCurrencyFormat(num);
     }
 }

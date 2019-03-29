@@ -28,3 +28,28 @@ mat-checkbox {
 mat-form-field {
     margin-right: 6px;
 }
+
+.shared-with {
+    margin-top: 12px;
+}
+
+.bill-title {
+    font-size: 30px;
+    font-weight: 500;
+}
+.bill-header {
+    margin-bottom: 12px;
+}
+.bill-key-info {
+    text-align: right;
+    font-size: 24px;
+}
+.bill-amount {
+    font-weight: 500;
+}
+.bill-due-date {
+    margin-right: 24px;
+}
+.bill-notes {
+    padding: 12px 0;
+}
