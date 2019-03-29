@@ -24,7 +24,13 @@ export class BillsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.billsSubscription = this.billsService.billsChanged
             .subscribe(bills => {
-                this.bills = bills;
+                this.bills = bills.sort((a, b) => {
+                    if (!a.due_date)
+                        return 1;
+                    if (a.due_date > b.due_date)
+                        return 1;
+                    return -1;
+                });
             });
         this.billsService.fetchBills();
         this.accountsSub = this.billsService.accountsChanged
@@ -35,7 +41,14 @@ export class BillsComponent implements OnInit, OnDestroy {
                     acctBills.push(acct.bills[0]);
                 }
                 this.accounts = accts;
-                this.bills = [...acctBills, ...this.bills];
+                const bills = [...acctBills, ...this.bills];
+                this.bills = bills.sort((a, b) => {
+                    if (!a.due_date)
+                        return 1;
+                    if (a.due_date > b.due_date)
+                        return 1;
+                    return -1;
+                });
             });
         this.billsService.fetchBills();
         this.billsService.fetchAccounts();

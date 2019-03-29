@@ -62,9 +62,23 @@ export class ViewBillComponent implements OnInit {
     }
 
     findBill() {
-        this.bill = this.billService.getAccountBill(this.accountId, this.billId);
+        if (this.accountId) {
+            this.bill = this.billService.getAccountBill(this.accountId, this.billId);
+        } else {
+            this.bill = this.billService.getBill(this.billId);
+        }
+        
         console.log(this.bill);
         this.friends = (this.bill && this.bill.shared_with) || [];
+    }
+
+    onDelete(bill: Bill) {
+        if (bill.account_id) {
+            this.billService.deleteAccount(bill);
+        } else {
+            this.billService.deleteBill(bill);
+        }
+        this.router.navigate(['bills'])
     }
 
     navigateToBillEdit(bill: Bill) {

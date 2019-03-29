@@ -6,7 +6,7 @@
         <span class="bill-amount">{{bill?.amount | currency}}</span>
       </div>
     </div>
-    <div>{{ bill?.notes }}</div>
+    <div class="bill-notes">{{ bill?.notes }}</div>
     <div *ngIf="friends.length > 0" class="shared-with">
       <hr>
         <h6>Shared with</h6>
@@ -29,6 +29,7 @@
       <div>
           <a mat-button routerLink="." color="accent">Pay</a>
           <a mat-button (click)="navigateToBillEdit(bill)" color="primary">Edit</a>
+          <a mat-raised-button (click)="onDelete(bill)" color="warn">Delete</a>
       </div>
     </div>
     <div *ngIf="getControls().length > 0">

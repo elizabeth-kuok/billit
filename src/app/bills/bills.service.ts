@@ -103,6 +103,21 @@ export class BillsService {
             .update(account);
     }
 
+    updateBill(bill: Bill) {
+        this.db.doc(this.genUserPath('bills') + '/' + bill.id)
+            .update(bill);
+    }
+
+    deleteBill(bill: Bill) {
+        this.db.doc(this.genUserPath('bills') + '/' + bill.id)
+            .delete()
+    }
+
+    deleteAccount(bill: Bill) {
+        this.db.doc(this.genUserPath('accounts') + '/' + bill.account_id)
+            .delete()
+    }
+
     getAccountBill(account_id: string, bill_id: string): Bill {
         const account = this.accounts
             .find((acct) => acct.id === account_id);

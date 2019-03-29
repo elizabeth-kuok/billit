@@ -86,7 +86,7 @@ export class BillAddComponent implements OnInit {
         this.billForm = new FormGroup({
             name: new FormControl(bill.name, { validators: [Validators.required] }),
             amount: new FormControl(this.toCurrencyFormat(bill.amount.toString())),
-            due_date: new FormControl(bill.due_date.toDate()),
+            due_date: new FormControl(bill.due_date && bill.due_date.toDate()),
             notes: new FormControl(bill.notes),
             day_repeat: new FormControl(''),
             repeat_on_date: new FormControl('')
@@ -123,8 +123,14 @@ export class BillAddComponent implements OnInit {
         };
 
         if (!doMakeAccount) {
-            console.log(bill);
-            this.billService.createBill(bill);
+            if (!this.isEdit) {
+                this.billService.createBill(bill);
+                this.router.navigate(['/bills']);
+                return;
+            }
+            bill.id = this.editBill.id;
+            this.billService.updateBill(bill);
+            this.router.navigate(['/bills', bill.id]);
             return;
         }
 
