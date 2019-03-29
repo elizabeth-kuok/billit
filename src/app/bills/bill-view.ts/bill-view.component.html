@@ -1,0 +1,8 @@
+<mat-card class="form-card mat-elevation-z7">
+    <div class="page-header">
+      <h3>{{ bill?.name }}</h3>
+      <div>{{ bill?.amount | currency }}</div>
+      <div>{{ transformDueDate(bill) | date }}</div>
+      <div>{{ bill?.notes }}</div>
+    </div>
+  </mat-card>

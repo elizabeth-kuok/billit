@@ -7,7 +7,8 @@ export interface Bill {
     payment: Payment;
     shared_with: Owed[];
     due_date?: firestore.Timestamp;
-    notes?: string
+    notes?: string;
+    account_id?: string;
 }
 
 export interface Account {

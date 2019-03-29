@@ -1,0 +1,21 @@
+button {
+    margin: 0 3px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.row {
+    margin-bottom: 12px;
+}
+
+.form-card {
+    margin-top: 24px;
+    padding-top: 24px;
+    padding-left: 36px;
+    padding-right: 36px;
+}
+.notes-area {
+    height: 120px;
+}

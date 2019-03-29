@@ -1,7 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Bill, Account } from './bill.model';
 import { BillsService } from './bills.service';
+import { Router } from '@angular/router';
+
+import { Util as _u } from '../util/util';
+
 @Component({
     selector: 'app-bills',
     templateUrl: './bills.component.html',
@@ -13,7 +17,9 @@ export class BillsComponent implements OnInit, OnDestroy {
     accounts: Account[];
     accountsSub: Subscription;
     
-    constructor(private billsService: BillsService) { }
+    constructor(
+        private router: Router,
+        private billsService: BillsService) { }
 
     ngOnInit() {
         this.billsSubscription = this.billsService.billsChanged
@@ -40,8 +46,15 @@ export class BillsComponent implements OnInit, OnDestroy {
         this.accountsSub.unsubscribe();
     }
 
-    transformDueDate(bill: Bill) {
-        if (!bill.due_date) return null;
-        return bill.due_date.toDate();
+    transformDueDate = _u.transformDueDate;
+
+    navigateToBillView(bill: Bill) {
+        console.log("Navigate to bill")
+        console.log(bill);
+        if (bill.account_id) {
+            this.router.navigate(['/bills/' + bill.account_id + '/' + bill.id]);
+        } else {
+            this.router.navigate(['/bills/' + bill.id]);
+        }
     }
 }

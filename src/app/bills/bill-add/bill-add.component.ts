@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component, ViewChild, OnInit, AfterViewInit, AfterContentInit } from "@angular/core";
+import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
 import { Bill, Account } from "../bill.model";
 import { BillsService } from "../bills.service";
 
@@ -14,6 +14,11 @@ import { Router } from "@angular/router";
 })
 export class BillAddComponent implements OnInit {
     @ViewChild('f') bForm: NgForm;
+
+    billForm: FormGroup;
+
+    // Reactive Form values;
+    name = new FormControl('');
 
     constructor(
         private billService: BillsService,
@@ -44,15 +49,25 @@ export class BillAddComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.billForm = new FormGroup({
+            name: new FormControl('', { validators: [Validators.required] }),
+            amount: new FormControl(''),
+            due_date: new FormControl(''),
+            notes: new FormControl(''),
+            day_repeat: new FormControl(''),
+            repeat_on_date: new FormControl('')
+        });
+
         for (let i = 2; i < 32; i++) {
             this.sourceMap.month.push('' + i);
         }
         this.filterMap.month = this.sourceMap.month.slice();
         this.filterMap.week = this.sourceMap.week.slice();
+
+        this.name.setValue("Some Bill");
     }
-    onSubmit(form: NgForm) {
-        const value = form.value;
-        console.log(value);
+    onSubmit() {
+        const value = this.billForm.value;
 
         const doMakeAccount = this.isRepeating;
 
@@ -68,7 +83,6 @@ export class BillAddComponent implements OnInit {
         if (!doMakeAccount) {
             console.log(bill);
             this.billService.createBill(bill);
-            form.reset();
             return;
         }
 
@@ -79,7 +93,6 @@ export class BillAddComponent implements OnInit {
         }
         console.log(account);
         this.billService.createAccount(account);
-        form.reset();
         this.router.navigate(['/bills']);
     }
 
@@ -87,9 +100,9 @@ export class BillAddComponent implements OnInit {
         this.isRepeating = event.checked;
     }
 
-    onBlur(num: string) {
-        const cur = this.toCurrencyFormat(num);
-        this.amount = cur;
+    onBlur() {
+        const cur = this.toCurrencyFormat(this.billForm.value.amount);
+        this.billForm.patchValue({ amount: cur });
     }
 
     onPeriodSelect(p) {

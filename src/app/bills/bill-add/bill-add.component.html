@@ -4,7 +4,7 @@
   </div>
   <div class="row form-body">
     <div class="col-sm-12">
-      <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <form (ngSubmit)="onSubmit()" [formGroup]="billForm">
         <div class="row">
           <div class="col-md-6">
             <mat-form-field class="full-width">
@@ -13,7 +13,7 @@
                   placeholder="Name"
                   type="text" 
                   id="name" 
-                  name="name" ngModel required>
+                  formControlName="name">
             </mat-form-field> 
           </div>
           <div class="col-md-3">
@@ -22,8 +22,8 @@
                 matInput
                 placeholder="Amount"
                 id="amount" 
-                name="amount" [ngModel]="amount"
-                (blur)="onBlur(f.value.amount)">
+                formControlName="amount"
+                (blur)="onBlur()">
               <span matPrefix>$&nbsp;</span> 
             </mat-form-field>
           </div>
@@ -32,7 +32,7 @@
               <input matInput 
                 [matDatepicker]="picker" 
                 placeholder="Due date (if any)"
-                name="due_date" ngModel>
+                formControlName="due_date">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -43,7 +43,7 @@
             <mat-form-field class="full-width">
               <textarea matInput class="notes-area"
                         placeholder="Notes"
-                        ngModel name="notes"></textarea>
+                        formControlName="notes"></textarea>
             </mat-form-field>
           </div>
         </div>
@@ -77,8 +77,7 @@
                       placeholder="Repeat on day" 
                       aria-label="Day of Repeat" 
                       matInput [matAutocomplete]="auto"
-                      name="day_repeat"
-                      ngModel
+                      formControlName="day_repeat"
                       (keyup)="onKeyUpFilter(mfilter.value, selectedPeriod)">
                 <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let day of filterMap[selectedPeriod]" [value]="day">
@@ -90,7 +89,7 @@
                 <input matInput 
                   [matDatepicker]="rpicker" 
                   placeholder="Repeat on date"
-                  name="repeat_on_date" ngModel>
+                  formControlName="repeat_on_date">
                 <mat-datepicker-toggle matSuffix [for]="rpicker"></mat-datepicker-toggle>
                 <mat-datepicker #rpicker></mat-datepicker>
               </mat-form-field>
@@ -102,7 +101,7 @@
               <button mat-raised-button 
                       color="primary"
                       type="submit" 
-                      [disabled]="!f.valid">
+                      [disabled]="billForm.invalid">
                         Create
               </button>
               <button mat-stroked-button

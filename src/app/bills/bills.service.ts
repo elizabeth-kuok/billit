@@ -66,9 +66,17 @@ export class BillsService {
             .snapshotChanges()
             .map(docArray => {
                 return docArray.map(doc => {
+                    console.log("Fetching accounts");
+                    console.log(doc.payload.doc.data());
+                    const account_id = doc.payload.doc.id
+                    const acct = doc.payload.doc.data() as Account;
+                    acct.bills = acct.bills.map(b => {
+                        b.account_id = account_id;
+                        return b;
+                    });
                     return {
-                        id: doc.payload.doc.id,
-                        ...doc.payload.doc.data()
+                        id: account_id,
+                        ...acct
                     } as Account;
                 })
             })
@@ -82,12 +90,23 @@ export class BillsService {
         this.fbSubs.push(sub);
     }
 
+    getAccountBill(account_id: string, bill_id: string) {
+        const account = this.accounts
+            .find((acct) => acct.id === account_id);
+        if (account) {
+            return account.bills.find((bill) => bill.id === bill_id);
+        }
+        return null;
+
+    }
+
     createBill(bill: Bill) {
         this.db.collection(this.genUserPath('bills'))
             .add(bill);
     }
 
     createAccount(acct: Account) {
+        acct.bills[0].id = this.db.createId();
         this.db.collection(this.genUserPath('accounts'))
             .add(acct);
     }

@@ -20,7 +20,7 @@
           <!-- <hr/> -->
           <div class="bill-toolbar d-flex justify-content-end">
               <a mat-button routerLink="." color="accent">Pay</a>
-              <a mat-button routerLink="." color="primary">View</a>
+              <a mat-button (click)="navigateToBillView(bill)" color="primary">View</a>
           </div>
       </mat-card>
   </div>
