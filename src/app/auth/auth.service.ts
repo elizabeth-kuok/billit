@@ -41,6 +41,7 @@ export class AuthService {
     this.afAuth.auth.createUserWithEmailAndPassword(
       authData.email, authData.password
     ).then(result => {
+      this.router.navigate(['bills']);
       console.log(result);
     }).catch(err => {
       console.log(err);
