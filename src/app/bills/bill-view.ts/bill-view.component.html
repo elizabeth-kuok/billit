@@ -5,4 +5,8 @@
       <div>{{ transformDueDate(bill) | date }}</div>
       <div>{{ bill?.notes }}</div>
     </div>
+    <div class="bill-toolbar d-flex justify-content-end">
+        <a mat-button routerLink="." color="accent">Pay</a>
+        <a mat-button (click)="navigateToBillEdit(bill)" color="primary">Edit</a>
+    </div>
   </mat-card>

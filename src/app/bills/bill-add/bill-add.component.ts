@@ -5,7 +5,7 @@ import { BillsService } from "../bills.service";
 
 import { firestore } from "firebase";
 import { MatCheckboxChange } from "@angular/material";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute, UrlSegment } from "@angular/router";
 
 @Component({
     selector: "app-bill-add",
@@ -16,11 +16,11 @@ export class BillAddComponent implements OnInit {
     @ViewChild('f') bForm: NgForm;
 
     billForm: FormGroup;
-
-    // Reactive Form values;
-    name = new FormControl('');
+    isEdit: boolean;
+    editBill: Bill;
 
     constructor(
+        private route: ActivatedRoute,
         private billService: BillsService,
         private router: Router
     ) { }
@@ -49,23 +49,63 @@ export class BillAddComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.billForm = new FormGroup({
-            name: new FormControl('', { validators: [Validators.required] }),
-            amount: new FormControl(''),
-            due_date: new FormControl(''),
-            notes: new FormControl(''),
-            day_repeat: new FormControl(''),
-            repeat_on_date: new FormControl('')
-        });
+        let urlSegments = this.route.snapshot.url;
+        console.log(urlSegments);
+        let bill: Bill;
+        if (urlSegments[1].path === 'edit') {
+            this.isEdit = true;
+            bill = this.getBill(urlSegments);
+            this.editBill = bill;
+        }
+
+        // let id = this.route.snapshot.paramMap.get('id');
+
+        this.createForm(bill);
 
         for (let i = 2; i < 32; i++) {
             this.sourceMap.month.push('' + i);
         }
         this.filterMap.month = this.sourceMap.month.slice();
         this.filterMap.week = this.sourceMap.week.slice();
-
-        this.name.setValue("Some Bill");
     }
+
+    private createForm(bill: Bill) {
+        if (!bill) {
+            this.billForm = new FormGroup({
+                name: new FormControl('', { validators: [Validators.required] }),
+                amount: new FormControl(''),
+                due_date: new FormControl(''),
+                notes: new FormControl(''),
+                day_repeat: new FormControl(''),
+                repeat_on_date: new FormControl('')
+            });
+            return;
+        }
+        this.billForm = new FormGroup({
+            name: new FormControl(bill.name, { validators: [Validators.required] }),
+            amount: new FormControl(this.toCurrencyFormat(bill.amount.toString())),
+            due_date: new FormControl(bill.due_date.toDate()),
+            notes: new FormControl(bill.notes),
+            day_repeat: new FormControl(''),
+            repeat_on_date: new FormControl('')
+        });
+        if (bill.account_id) {
+            this.isRepeating = true;
+        }
+    }
+
+    private getBill(urlSegments: UrlSegment[]): Bill {
+        if (urlSegments.length > 3) {
+            const acctId = urlSegments[2].path;
+            const billId = urlSegments[3].path;
+            // get account bill
+            return this.billService.getAccountBill(acctId, billId);
+        } else {
+            const billId = urlSegments[2].path;
+            return this.billService.getBill(billId);
+        }
+    }
+
     onSubmit() {
         const value = this.billForm.value;
 
@@ -92,8 +132,16 @@ export class BillAddComponent implements OnInit {
             notes: value.notes
         }
         console.log(account);
-        this.billService.createAccount(account);
-        this.router.navigate(['/bills']);
+        if (!this.isEdit) {
+            this.billService.createAccount(account);
+            this.router.navigate(['/bills']);
+            return;
+        }
+        bill.account_id = this.editBill.account_id;
+        bill.id = this.editBill.id;
+        this.billService.updateAccountBill(bill);
+        this.router.navigate(['/bills', bill.account_id, bill.id]);
+        
     }
 
     onRepeatChecked(event: MatCheckboxChange) {

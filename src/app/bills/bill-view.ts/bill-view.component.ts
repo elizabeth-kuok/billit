@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { BillsService } from '../bills.service';
@@ -22,6 +22,7 @@ export class ViewBillComponent implements OnInit {
     transformDueDate = _u.transformDueDate;
 
     constructor(
+        private router: Router,
         private route: ActivatedRoute,
         private billService: BillsService
     ) {}
@@ -53,5 +54,13 @@ export class ViewBillComponent implements OnInit {
 
     findBill() {
         this.bill = this.billService.getAccountBill(this.accountId, this.billId);
+    }
+
+    navigateToBillEdit(bill: Bill) {
+        if (bill.account_id) {
+            this.router.navigate(['bills/edit/' + bill.account_id + '/' + bill.id]);
+        } else {
+            this.router.navigate(['bills/edit/' + bill.id]);
+        }
     }
 }

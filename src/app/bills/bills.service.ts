@@ -90,14 +90,30 @@ export class BillsService {
         this.fbSubs.push(sub);
     }
 
-    getAccountBill(account_id: string, bill_id: string) {
+    updateAccountBill(bill: Bill) {
+        const account = this.accounts
+            .find((acct) => acct.id === bill.account_id);
+        const index = account.bills.findIndex(b => b.id === bill.id);
+        account.name = bill.name;
+        account.notes = bill.notes;
+        account.bills[index] = bill;
+        console.log("Update service");
+        console.log(account);
+        this.db.doc(this.genUserPath('accounts') + '/' + account.id)
+            .update(account);
+    }
+
+    getAccountBill(account_id: string, bill_id: string): Bill {
         const account = this.accounts
             .find((acct) => acct.id === account_id);
         if (account) {
             return account.bills.find((bill) => bill.id === bill_id);
         }
         return null;
+    }
 
+    getBill(bill_id: string) {
+        return this.bills.find(b => b.id === bill_id);
     }
 
     createBill(bill: Bill) {

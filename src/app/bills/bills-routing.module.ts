@@ -7,6 +7,8 @@ import { ViewBillComponent } from './bill-view.ts/bill-view.component';
 const routes: Routes = [
     { path: 'bills',    component: BillsComponent },
     { path: 'bills/new', component: BillAddComponent },
+    { path: 'bills/edit/:bill_id', component: BillAddComponent },
+    { path: 'bills/edit/:account_id/:bill_id', component: BillAddComponent },
     { path: 'bills/:bill_id', component: ViewBillComponent },
     { path: 'bills/:account_id/:bill_id', component: ViewBillComponent }
 ];
