@@ -16,6 +16,9 @@ export class BillsComponent implements OnInit, OnDestroy {
     billsSubscription: Subscription;
     accounts: Account[];
     accountsSub: Subscription;
+
+    sumPerYear: number = 0;
+    sumPerMonth = 0;
     
     constructor(
         private router: Router,
@@ -49,6 +52,11 @@ export class BillsComponent implements OnInit, OnDestroy {
                         return 1;
                     return -1;
                 });
+                let perMonth = this.accounts.reduce((p, c) => {
+                    return p + c.bills[0].amount;
+                }, 0);
+                this.sumPerMonth = perMonth;
+                this.sumPerYear = perMonth * 12;
             });
         this.billsService.fetchBills();
         this.billsService.fetchAccounts();

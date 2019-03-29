@@ -8,6 +8,12 @@ mat-card {
 mat-card p {
     padding-left: 16px
 } */
+.summary {
+    margin-top: 20px;
+}
+.chip {
+    margin-right: 20px;
+}
 hr {
     margin-bottom: 3px;
 }
@@ -15,12 +21,16 @@ hr {
     background-color: #fafafa;
     padding: 24px;
     border-radius: 6px;
+    margin-bottom: 12px;
 }
 
 .accounts mat-card {
     border-radius: 6px 0;
     /* color: #ffffff; */
     /* background-color: #0d47a1; */
+    border: 1px solid #f8bbd0;
+}
+.bill-account {
     border: 1px solid #f8bbd0;
 }
 .bill-card {
